@@ -6,7 +6,7 @@ class Store {
       rows: 6,
       cols: 6,
       page: 1,
-      
+
       selected: -1,
 
       view: 'landing',
@@ -37,6 +37,8 @@ class Store {
   setLandingView = action(() => this.view = 'landing');
 
   nextPage = action.bound(() => {this.page += 1; this.selected=-1;});
+//todo
+  backPage = action.bound(() => {this.page -= 1; this.selected+=1;});
 
   setSelected = action((i) => this.selected = i);
 
