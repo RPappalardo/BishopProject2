@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import NRKeyHandler from './NRKeyHandler';
+import unclogo from './unclogo.png';
+import cldslogo from './cldslogo.jpeg';
+import SquareNum4 from './4_Square_Book.gif';
+import SquareNum9 from './9_Location_Book.gif';
+import SquareNum36 from './36_Location_Board.gif';
 import './App.css';
 
 var words = [
@@ -64,7 +69,48 @@ class App extends Component {
 
 class _Landing extends Component {
   render() {
-    return (<h1><a href="/2/2/1">Landing</a></h1>);
+    return (<div id = "home">
+           <center>
+              <div>
+                 <h2 style={{backgroundColor:'skyblue'}}>Universal Core Communication Systems</h2>
+                 <img src={unclogo} style={{width: 170, height: 120}} alt=""/>
+                 <img src={cldslogo} style={{width: 120, height: 120}} alt=""/>
+              </div>
+              <table id="table2">
+                 <tbody>
+                    <tr>
+                       <td>
+                          <h5>4 Square Universal Core Communication Book</h5>
+                          <button>
+                          <a href="/2/2/1" style={{ textDecoration: 'none' }}>
+                          <img src={SquareNum4} alt="4 Square Book"/>
+                          </a>
+                          </button>
+                       </td>
+                       {"\n"}
+                       <td>
+                          <h5>9 Location Universal Core Communication Book</h5>
+                          <button>
+                          <a href="/3/3/1" style={{textDecoration: 'none'}}>
+                          <img src={SquareNum9} alt="9 Square Book"/>
+                          </a>
+                          </button>
+                       </td>
+                       {"\n"}
+                       <td>
+                          <h5>36 Location Universal Core Communication Board</h5>
+                          <button>
+                          <a href="/6/6/1" style={{textDecoration: 'none'}}>
+                          <img src={SquareNum36} alt="36 Square Board"/>
+                          </a>
+                          </button>
+                       </td>
+                    </tr>
+                 </tbody>
+              </table>
+           </center>
+        </div>
+      );
   }
 }
 
@@ -88,8 +134,8 @@ class _Core36 extends Component {
         if (i < words.length) {
           const word = words[i];
           const url = process.env.PUBLIC_URL + `/symbols/${word}.png`;
-          const style = { width: `${w}%`, height: `${h}%`, 
-            background: store.selected===i ? 'red' : 'inherit' };
+          const style = { width: `${w}%`, height: `${h}%`,
+            background: store.selected===i ? 'skyblue' : 'inherit' };
           symbols.push(
             <button
               key={word}
@@ -123,11 +169,11 @@ class _Core36 extends Component {
     }
     return (
       <div className="App">
-        {showback && <button className="nav" >Back</button>}
+        {showback && <button className="nav" onClick={window.history.go(-1)} >Back</button>}
         <div className="symbols">
           {symbols}
         </div>
-        {shownext && 
+        {shownext &&
           <button className="nav" onClick={store.nextPage}>Next</button> }
         <NRKeyHandler keyValue={["ArrowRight"," "]} onKeyHandle={mover} />
         <NRKeyHandler keyValue="ArrowLeft" onKeyHandle={chooser} />
