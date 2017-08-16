@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import NRKeyHandler from './NRKeyHandler';
+import Swipe from 'react-swipe-component';
 import unclogo from './unclogo.png';
 import cldslogo from './cldslogo.jpeg';
 import SquareNum4 from './4_Square_Book.gif';
@@ -135,7 +136,7 @@ class _Core36 extends Component {
           const word = words[i];
           const url = process.env.PUBLIC_URL + `/symbols/${word}.png`;
           const style = { width: `${w}%`, height: `${h}%`,
-            background: store.selected===i ? 'skyblue' : 'inherit' };
+             background: store.selected+offset===i ? 'skyblue' : 'inherit' };
           symbols.push(
             <button
               key={word}
@@ -153,31 +154,42 @@ class _Core36 extends Component {
     }
     function mover() {
       console.log('mover');
+      const perpage = store.rows * store.cols;
+      var npages = Math.ceil(words.length / perpage);
+      const offset = (store.page - 1) * perpage;
       var s = store.selected + 1;
-      if (s === words.length) {
-        store.setView(store.rows, store.cols, 1);
-        s = -1;
-      } else if (store.selected % perpage === perpage - 1) {
-        store.nextPage();
+      if (s+offset === words.length) {
+        store.setCoreView(store.rows, store.cols, 1);
+        } else if (store.selected === perpage - 1) {
+  console.log('nextpage');
+   store.nextPage();
+ } else {
+        store.setSelected(s);
       }
-      store.setSelected(s);
     }
     function chooser() {
+      const perpage = store.rows * store.cols;
+      var npages = Math.ceil(words.length / perpage);
+      const offset = (store.page - 1) * perpage;
       if (store.selected >= 0) {
-        sayIt(store.selected);
+        sayIt(offset + store.selected);
       }
     }
     return (
-      <div className="App">
-        {showback && <button className="nav" onClick={window.history.go(-1)} >Back</button>}
+       <Swipe
+              onSwipedLeft={store.backPage}
+              onSwipedRight={store.nextPage}
+              className="App"
+            >
+              {showback && <button className="nav" onClick={store.backPage}>Back</button>}
         <div className="symbols">
           {symbols}
         </div>
         {shownext &&
           <button className="nav" onClick={store.nextPage}>Next</button> }
         <NRKeyHandler keyValue={["ArrowRight"," "]} onKeyHandle={mover} />
-        <NRKeyHandler keyValue="ArrowLeft" onKeyHandle={chooser} />
-      </div>
+          <NRKeyHandler keyValue={["ArrowLeft", "Enter"]} onKeyHandle={chooser} />      
+    </Swipe>
     );
   }
 }

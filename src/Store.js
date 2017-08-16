@@ -1,4 +1,4 @@
-import { extendObservable, computed, action } from 'mobx';
+import { extendObservable, computed, action, autorun } from 'mobx';
 
 class Store {
   constructor() {
@@ -16,6 +16,7 @@ class Store {
       height: window.innerHeight
 
     });
+    autorun(() => console.log("auto", this.rows, this.cols, this.page, this.selected));
   }
 
   currentPath = computed(() => {
@@ -36,9 +37,9 @@ class Store {
 
   setLandingView = action(() => this.view = 'landing');
 
-  nextPage = action.bound(() => {this.page += 1; this.selected=-1;});
+  nextPage = action.bound(() => {this.page += 1; this.selected = -1;});
 //todo
-  backPage = action.bound(() => {this.page -= 1; this.selected+=1;});
+  backPage = action.bound(() => {this.page -= 1; this.selected = -1;});
 
   setSelected = action((i) => this.selected = i);
 
